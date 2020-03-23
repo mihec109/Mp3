@@ -7,4 +7,4 @@ NetBeans using Java Swing and Mysql.
 
 
 # __Trello link__
-[Trello] (https://trello.com/b/GerAxSiY)
+[Trello] (https://trello.com/b/GerAxSiY/livechat)
