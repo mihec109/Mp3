@@ -18,8 +18,9 @@ import javax.swing.JOptionPane;
  *
  * @author mihah
  */
+
 public class database {
-    private Connection con;
+    public Connection con;
     
     public database(){    
     }
@@ -77,15 +78,22 @@ public class database {
          return null;
         }
         
-    public void DodajS(String name, String url)
+    public void DodajS(String name, String url, String author, String album, User u)
     {
         try {
-        String sql = "INSERT INTO music(name, url) VALUES(?,?)";
+        String sql = "INSERT INTO music (name, url, author_id, album_id, user_id) VALUES (\n" +
+"        ?, ?,\n" +
+"        (SELECT id FROM authors WHERE authors.name = ?),\n" +
+"        (SELECT id FROM albums WHERE albums.name = ?),\n" +
+"        ?\n" +
+"    );";
         PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
         ps.setString(1, name);
         ps.setString(2, url);
+        ps.setString(3, author);
+        ps.setString(4, album);
+        ps.setInt(5, u.GetId());
         ps.execute();
-        
         }
         catch(SQLException ex)
         {
@@ -93,7 +101,47 @@ public class database {
             Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
+    
+    public void DodajA(String name)
+    {
+        try {
+        String sql = "INSERT INTO authors(name) VALUES(?)";
+        PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
+        ps.setString(1, name);
+        ps.execute();
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public void CreateA(String name)
+    {
+        try {
+        String sql = "INSERT INTO albums(name) VALUES(?)";
+        PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
+        ps.setString(1, name);
+        ps.execute();
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public void EditA()
+    {
         
+    }
+    
+    public void DeleteA()
+    {
+        
+    }
+
         
 
 }

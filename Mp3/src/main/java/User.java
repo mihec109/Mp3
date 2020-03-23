@@ -8,6 +8,7 @@
  *
  * @author mihah
  */
+
 class User {
     public static int user_id;
     private int id;
@@ -20,5 +21,14 @@ class User {
         firstname = _firstname;
         lastname = _lastname;
         mail = _mail;
+    }
+        
+      public User(){
+        
+    }
+      
+    public int GetId()
+    {
+        return id;
     }
 }
