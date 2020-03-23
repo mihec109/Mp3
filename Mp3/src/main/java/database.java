@@ -75,6 +75,25 @@ public class database {
         } catch(SQLException ex){
         }
          return null;
+        }
+        
+    public void DodajS(String name, String url)
+    {
+        try {
+        String sql = "INSERT INTO music(name, url) VALUES(?,?)";
+        PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setString(2, url);
+        ps.execute();
+        
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
+        
+        
 
 }
