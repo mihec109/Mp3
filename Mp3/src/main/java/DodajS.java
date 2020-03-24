@@ -63,8 +63,9 @@ public class DodajS extends javax.swing.JFrame {
         try
         {
             db.Open();
-            String sql = "SELECT * from albums";
+            String sql = "SELECT * FROM albums WHERE user_id = ?";
             PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+            ps.setInt(1, u.GetId());
             ResultSet rS = ps.executeQuery();
             
             while(rS.next())
@@ -250,7 +251,7 @@ public class DodajS extends javax.swing.JFrame {
 
     private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
         // TODO add your handling code here:
-        System.out.print(String.valueOf(jComboBox2.getSelectedItem()));
+       // System.out.print(String.valueOf(jComboBox2.getSelectedItem()));
     }//GEN-LAST:event_jComboBox2ItemStateChanged
     
     /**

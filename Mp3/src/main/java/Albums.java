@@ -18,13 +18,19 @@ public class Albums extends javax.swing.JFrame {
     /**
      * Creates new form Albums
      */
+    User u;
     database db;
-    public Albums() {
+    public Albums(User _u) {
         initComponents();
+        u = _u;
         this.setLocationRelativeTo(null);
         db = new database();
         FillcomboSongs();
         FillcomboAlbum();
+    }
+
+    private Albums() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
         private void FillcomboSongs()
@@ -32,8 +38,9 @@ public class Albums extends javax.swing.JFrame {
         try
         {
             db.Open();
-            String sql = "SELECT * from music";
+            String sql = "SELECT * FROM music WHERE user_id = ?";
             PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+            ps.setInt(1, u.GetId());
             ResultSet rS = ps.executeQuery();
             
             while(rS.next())
@@ -54,8 +61,9 @@ public class Albums extends javax.swing.JFrame {
         try
         {
             db.Open();
-            String sql = "SELECT * from albums";
+            String sql = "SELECT * FROM albums WHERE user_id = ?";
             PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+            ps.setInt(1, u.GetId());
             ResultSet rS = ps.executeQuery();
             
             while(rS.next())
@@ -68,7 +76,7 @@ public class Albums extends javax.swing.JFrame {
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(null,ex.getMessage());
-        }           
+        }          
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -178,21 +186,21 @@ public class Albums extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-            CreateA frm = new CreateA();
+            CreateA frm = new CreateA(u);
             frm.setVisible(true);
             dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-        Menu frm = new Menu();
+        Menu frm = new Menu(u);
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        EditA frm = new EditA();
+        EditA frm = new EditA(u);
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed

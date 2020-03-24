@@ -1,3 +1,9 @@
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,8 +19,45 @@ public class EditA extends javax.swing.JFrame {
     /**
      * Creates new form EditA
      */
-    public EditA() {
+    database db;
+    User u;
+    public EditA(User _u) {
         initComponents();
+        u = _u;
+        this.setLocationRelativeTo(null);
+        db = new database();
+        Neki();
+    }
+        public void Neki()
+    {
+        List1();
+    }
+    public void List1() 
+    {
+        try
+        {
+        DefaultListModel model = new DefaultListModel();
+        db.Open();
+        String sql = "SELECT * FROM albums WHERE user_id = ?";
+        PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+        ps.setInt(1, u.GetId());
+        ResultSet rS = ps.executeQuery();
+
+        while (rS.next())
+        {
+            String name = rS.getString("name"); 
+            model.addElement(name);
+        }
+        jList1.setModel(model);
+        db.closeDB();        
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    private EditA() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -104,10 +147,10 @@ public class EditA extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        Albums frm = new Albums();
+        Albums frm = new Albums(u);
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel2MouseClicked

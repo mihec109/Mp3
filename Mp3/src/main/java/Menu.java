@@ -1,3 +1,13 @@
+
+import java.sql.Array;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,6 +26,7 @@ public class Menu extends javax.swing.JFrame {
     
     public User u;
     database db;
+    
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -27,7 +38,42 @@ public class Menu extends javax.swing.JFrame {
         u = _u;
         db = new database();
         User.user_id = u.GetId();
+        Neki();
     }
+    
+    public void Neki()
+    {
+        SongList();
+    }
+
+    
+//its not work boi
+public void SongList() 
+{
+    try
+    {
+    DefaultListModel model = new DefaultListModel();
+    db.Open();
+    String sql = "SELECT * FROM music where user_id = ?";
+    PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+    ps.setInt(1, u.GetId());
+    ResultSet rS = ps.executeQuery();
+
+    while (rS.next())
+    {
+        String name = rS.getString("name"); 
+        model.addElement(name);
+    }
+    SongList.setModel(model);
+    db.closeDB();        
+    }
+    catch(Exception e)
+    {
+        JOptionPane.showMessageDialog(null, e);
+    }
+
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,9 +87,10 @@ public class Menu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        SongList = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,12 +103,12 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        SongList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "neki" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(SongList);
 
         jButton2.setText("Albums");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +124,8 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Play");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,7 +137,9 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton4)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1)
@@ -112,12 +163,16 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         DodajS frm = new DodajS(u);
@@ -127,7 +182,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Albums frm = new Albums();
+        Albums frm = new Albums(u);
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -175,11 +230,12 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> SongList;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

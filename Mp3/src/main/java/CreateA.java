@@ -16,11 +16,17 @@ public class CreateA extends javax.swing.JFrame {
     /**
      * Creates new form CreateA
      */
+    User u;
     database db;
-    public CreateA() {
+    public CreateA(User _u) {
         initComponents();
+        u = _u;
         this.setLocationRelativeTo(null);
         db = new database();
+    }
+
+    private CreateA() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -98,10 +104,10 @@ public class CreateA extends javax.swing.JFrame {
             return;
         }
         db.Open();
-        db.CreateA(name);
+        db.CreateA(name, u);
         db.closeDB();
         JOptionPane.showMessageDialog(null, "You have succesfully createad an Album");
-        Albums frm = new Albums();
+        Albums frm = new Albums(u);
         frm.setVisible(true);
         dispose();
         
@@ -109,7 +115,7 @@ public class CreateA extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        Albums frm = new Albums();
+        Albums frm = new Albums(u);
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel2MouseClicked

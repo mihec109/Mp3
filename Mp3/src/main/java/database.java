@@ -117,12 +117,14 @@ public class database {
         } 
     }
     
-    public void CreateA(String name)
+    public void CreateA(String name, User u)
     {
+        
         try {
-        String sql = "INSERT INTO albums(name) VALUES(?)";
+        String sql = "INSERT INTO albums (name, user_id) VALUES (?,?)";
         PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
         ps.setString(1, name);
+        ps.setInt(2, u.GetId());
         ps.execute();
         }
         catch(SQLException ex)
@@ -134,12 +136,30 @@ public class database {
     
     public void EditA()
     {
-        
+        try {
+        String sql = "";
+        PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
+        ps.execute();
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
     public void DeleteA()
     {
-        
+        try {
+        String sql = "";
+        PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
+        ps.execute();
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
         
