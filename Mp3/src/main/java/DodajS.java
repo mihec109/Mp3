@@ -54,7 +54,7 @@ public class DodajS extends javax.swing.JFrame {
             db.closeDB();
         }
         catch(Exception ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage());
+
         }           
     }
     
@@ -77,7 +77,7 @@ public class DodajS extends javax.swing.JFrame {
             db.closeDB();
         }
         catch(Exception ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage());
+
         }           
     }
     
@@ -213,6 +213,9 @@ public class DodajS extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try
+        {
+
         String name = jTextField2.getText();
         
         String url = jTextField1.getText();
@@ -220,8 +223,14 @@ public class DodajS extends javax.swing.JFrame {
         String author = String.valueOf(jComboBox1.getSelectedItem());
         
         String album = String.valueOf(jComboBox2.getSelectedItem());
+       
         
-        if(url.isEmpty() || name.isEmpty()){
+        if(name.isEmpty() || url.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Izpolni!");
+            return;
+        }
+        if(author == ("null") || album == ("null"))
+        {
             JOptionPane.showMessageDialog(null, "Izpolni!");
             return;
         }
@@ -229,9 +238,14 @@ public class DodajS extends javax.swing.JFrame {
         db.DodajS(name, url, author, album, u);
         db.closeDB();
         JOptionPane.showMessageDialog(null, "You have succesfully added a song");
-        Menu frm = new Menu();
+        Menu frm = new Menu(u);
         frm.setVisible(true);
         dispose();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Izpolni!");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked

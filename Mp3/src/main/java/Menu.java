@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -38,6 +40,7 @@ public class Menu extends javax.swing.JFrame {
         u = _u;
         db = new database();
         User.user_id = u.GetId();
+        
         Neki();
     }
     
@@ -90,7 +93,7 @@ public void SongList()
         SongList = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,11 +106,6 @@ public void SongList()
             }
         });
 
-        SongList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "neki" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(SongList);
 
         jButton2.setText("Albums");
@@ -124,7 +122,12 @@ public void SongList()
             }
         });
 
-        jButton4.setText("Play");
+        jButton5.setText("Remove");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,7 +141,7 @@ public void SongList()
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4)
+                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -164,8 +167,8 @@ public void SongList()
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addComponent(jButton5)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         pack();
@@ -193,6 +196,34 @@ public void SongList()
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+        String index = SongList.getSelectedValue(); 
+        if(index.isEmpty()){
+        JOptionPane.showMessageDialog(null, "Izpolni!");
+        return;
+        }
+        db.Open();
+        String sql = "DELETE FROM music WHERE (name = ? && user_id = ?)";
+        PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+        ps.setString(1, index);
+        ps.setInt(2, u.GetId());
+        ps.execute();
+        JOptionPane.showMessageDialog(null, "Succsessfuly deleted");
+        db.closeDB();  
+        Menu frm = new Menu(u);
+        frm.setVisible(true);
+        dispose();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Izpolni!");
+        }       
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,8 +265,11 @@ public void SongList()
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+
+
 }

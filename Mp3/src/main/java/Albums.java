@@ -52,7 +52,7 @@ public class Albums extends javax.swing.JFrame {
             db.closeDB();
         }
         catch(Exception ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage());
+
         }           
     }
     
@@ -75,7 +75,7 @@ public class Albums extends javax.swing.JFrame {
             db.closeDB();
         }
         catch(Exception ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage());
+
         }          
     }
     /**
@@ -110,6 +110,11 @@ public class Albums extends javax.swing.JFrame {
         });
 
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Back");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -204,6 +209,35 @@ public class Albums extends javax.swing.JFrame {
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+        String song = String.valueOf(jComboBox1.getSelectedItem());    
+        String album = String.valueOf(jComboBox2.getSelectedItem());
+        if(song == ("null") || album == ("null")){
+        JOptionPane.showMessageDialog(null, "Izpolni!");
+        return;
+        }
+        db.Open();
+        String sql = "UPDATE music SET album_id = (SELECT id FROM albums WHERE name = ?) WHERE (name = ? && user_id = ?)";
+        PreparedStatement ps = (PreparedStatement) db.con.prepareStatement(sql);
+        ps.setString(1, album);
+        ps.setString(2, song);
+        ps.setInt(3, u.GetId());
+        ps.executeUpdate();
+        db.closeDB();        
+        JOptionPane.showMessageDialog(null, "Succsessfuly updated");
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }     
+        Albums frm = new Albums(u);
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

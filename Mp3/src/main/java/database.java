@@ -97,15 +97,15 @@ public class database {
         }
         catch(SQLException ex)
         {
-            JOptionPane.showMessageDialog(null,ex.getMessage());
-            Logger.getLogger(database.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Izpolni!");
+
         } 
     }
     
     public void DodajA(String name)
     {
         try {
-        String sql = "INSERT INTO authors(name) VALUES(?)";
+        String sql = "INSERT INTO authors(name) VALUES (?)";
         PreparedStatement ps = (PreparedStatement) con.prepareStatement(sql);
         ps.setString(1, name);
         ps.execute();
